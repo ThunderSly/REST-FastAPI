@@ -16,7 +16,7 @@ class Tarefa(BaseModel):
 
 @app.post("/Tarefa/")
 async def add(tarefa: Tarefa):
-    tarefa = {"name" : tarefa.nome}
+    tarefa = {"nome" : tarefa.nome}
     db.insert(tarefa)
     return
 
@@ -25,8 +25,8 @@ async def listar():
     tarefasDict = {}
     tarefasDict['Values'] = []
     for i in db.find():
-        tarefasDict['Values']
-        return 
+        tarefasDict['Values'].append({'nome': i["nome"]})
+    return tarefasDict
 
 
 @app.get("/healthcheck/")

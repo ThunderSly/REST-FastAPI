@@ -12,9 +12,9 @@ app = FastAPI()
 class Tarefa(BaseModel):
     nome: str
 
-@app.get("/")
+@app.get("/healthcheck/")
 async def hello():
-    response = requests.get(url = address + "/")
+    response = requests.get(url = address + "/healthcheck/")
     return response.json()
 
 @app.get("/Tarefa/")
