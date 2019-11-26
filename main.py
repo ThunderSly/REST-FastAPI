@@ -1,49 +1,33 @@
-#!/usr/bin/env python3
-
+#!/usr/bin/env python3s
 from fastapi import FastAPI
 from pydantic import BaseModel
+import os
+import pymongo
+
+dbIP = os.getenv("mongoIP")
+dbAddress = "http://" + dbIP + ":27017"
+clientMongo = pymongo.MongoClient(dbAddress)
+db = clientMongo['databaseMongo']
 
 app = FastAPI()
-
-contadorId = 0
-
-Dict = {}
 
 class Tarefa(BaseModel):
     nome: str
 
-class Tarefas:
-    def __init__(self, nome):
-        global contadorId
-        self.id = contadorId
-        self.nome = nome
-        Dict[contadorId] = nome
-        contadorId += 1
+@app.post("/Tarefa/")
+async def add(tarefa: Tarefa):
+    tarefa = {"name" : tarefa.nome}
+    db.insert(tarefa)
+    return
 
 @app.get("/Tarefa/")
 async def listar():
-    return list(Dict.values())
+    tarefasDict = {}
+    tarefasDict['Values'] = []
+    for i in db.find():
+        tarefasDict['Values']
+        return 
 
-@app.post("/Tarefa/")
-async def add(tarefa: Tarefa):
-    tarefa_dict = tarefa.dict()
-    Tarefa1 = Tarefas(tarefa_dict["nome"])
-    return
-
-@app.get("/Tarefa/{id}")
-async def show(id: int):
-    return Dict.get(id)
-
-@app.put("/Tarefa/{id}")
-async def update(id: int, tarefa: Tarefa):
-    tarefa_dict = tarefa.dict()
-    Dict[id] = tarefa_dict["nome"]
-    return
-
-@app.delete("/Tarefa/{id}")
-async def delete(id: int):
-    del Dict[id]
-    return 
 
 @app.get("/healthcheck/")
 async def check():
