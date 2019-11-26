@@ -1,13 +1,14 @@
-#!/usr/bin/env python3s
-from fastapi import FastAPI
+#!/usr/bin/env python3
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import os
 import pymongo
 
 dbIP = os.getenv("mongoIP")
-dbAddress = "http://" + dbIP + ":27017"
+dbAddress = "mongodb://" + dbIP + ":27017/"
 clientMongo = pymongo.MongoClient(dbAddress)
-db = clientMongo['databaseMongo']
+database = clientMongo['RaulDB']
+db = database['databaseMongo']
 
 app = FastAPI()
 

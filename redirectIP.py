@@ -1,4 +1,4 @@
-#!/usr/bin/env python3s
+#!/usr/bin/env python3
 from fastapi import FastAPI
 from pydantic import BaseModel
 import requests
